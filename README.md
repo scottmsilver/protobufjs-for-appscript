@@ -3,26 +3,22 @@ This is a small helper library that helps us generate a single JS file of protob
 
 To do this yourself:
 
-1. Install and build the library (you can give the global name anything you want.)
-
+- Install and build the library (you can give the global name anything you want.)
 ```console
 npm install --save-dev protobufjs
 npx esbuild index.js --bundle --global-name=psl --outfile=protobufjs.js
 ```
+- Copy the contents of protobuf.js to your AppScript (it will be called protobuf.gs, presumably). I copied and pasted. :)
 
-1. Copy the contents of protobuf.js to your AppScript (it will be called protobuf.gs, presumably) 
-
-1. Use it
-
+- Use it
 ```javascript
 const flightsProto = "my protofile as string"
 const root = await psl.protobuf.parse(flightsProto).root
 ```
 
-1. Note that you cannot load files so I converted my proto into a string.
+- Note that you cannot load files so I converted my proto into a string.
 
-1. You might also wish to test to see if you are running under AppScript so you can develop simulataneously locally and in AppScript. This piece of code might be useful.
-
+- You might also wish to test to see if you are running under AppScript so you can develop simulataneously locally and in AppScript. This piece of code might be useful.
 ```javascript
 // Return true if this script is running under Google App Script
 function underGoogleAppScript() {
@@ -30,7 +26,7 @@ function underGoogleAppScript() {
 }
 ```
 
-1. I use it like this:
+- I use it like this:
 
 ```javascript
 const protobuf = underGoogleAppScript() ? psl.protobuf : require("protobufjs");
