@@ -4645,11 +4645,85 @@ var psl = (() => {
     }
   });
 
+  // node_modules/flight-designator/lib/flight-designator.js
+  var require_flight_designator = __commonJS({
+    "node_modules/flight-designator/lib/flight-designator.js"(exports2, module2) {
+      function FlightDesignator2(airline, number, suffix) {
+        if (!(this instanceof FlightDesignator2))
+          return new FlightDesignator2(airline, number, suffix);
+        this.airlineCode = airline;
+        this.flightNumber = parseInt(number, 10);
+        this.operationalSuffix = suffix || "";
+      }
+      function zeroPad(str) {
+        str = str + "";
+        while (str.length < 4)
+          str = "0" + str;
+        return str;
+      }
+      FlightDesignator2.pattern = /^([A-Z0-9]{2}[A-Z]?)\s*([0-9]{1,4})\s*([A-Z]?)$/i;
+      FlightDesignator2.airlinePattern = /^([A-Z0-9]{2}[A-Z]?)$/i;
+      FlightDesignator2.flightPattern = /(?=^0*[1-9][0-9]*\s*[A-Z]?$)(?:^([0-9]{1,4})\s*([A-Z]?)$)/;
+      FlightDesignator2.suffixPattern = /^[A-Z]$/i;
+      FlightDesignator2.isValid = function(designator) {
+        var parts = (designator + "").match(FlightDesignator2.pattern);
+        return parts != null && FlightDesignator2.isValidFlightNumber(parts[2]);
+      };
+      FlightDesignator2.isValidAirlineCode = function(airlineCode) {
+        return FlightDesignator2.airlinePattern.test(airlineCode);
+      };
+      FlightDesignator2.isValidFlightNumber = function(flightNumber) {
+        return FlightDesignator2.flightPattern.test(flightNumber);
+      };
+      FlightDesignator2.isValidSuffix = function(suffix) {
+        return suffix == null || suffix === "" ? true : FlightDesignator2.suffixPattern.test(suffix);
+      };
+      FlightDesignator2.parse = function(value) {
+        try {
+          return new FlightDesignator2().parse(value);
+        } catch (e) {
+          return null;
+        }
+      };
+      FlightDesignator2.format = function(value, spaces, pad) {
+        return new FlightDesignator2().parse(value).toString(spaces, pad);
+      };
+      FlightDesignator2.prototype = {
+        constructor: FlightDesignator2,
+        isValid: function() {
+          return FlightDesignator2.isValidAirlineCode(this.airlineCode) && FlightDesignator2.isValidFlightNumber(this.flightNumber) && FlightDesignator2.isValidSuffix(this.operationalSuffix);
+        },
+        parse: function(value) {
+          var parts = (value + "").match(FlightDesignator2.pattern);
+          if (parts == null || !FlightDesignator2.isValidFlightNumber(parts[2]))
+            throw new Error('Invalid flight designator "' + value + '"');
+          this.operationalSuffix = parts.pop();
+          this.flightNumber = parseInt(parts.pop(), 10);
+          this.airlineCode = parts.pop();
+          return this;
+        },
+        toString: function(spaces, pad) {
+          var parts = [
+            this.airlineCode.toUpperCase(),
+            pad ? zeroPad(this.flightNumber) : this.flightNumber
+          ];
+          if (this.operationalSuffix) {
+            parts.push(this.operationalSuffix.toUpperCase());
+          }
+          return parts.join(spaces ? " " : "");
+        }
+      };
+      module2.exports = FlightDesignator2;
+    }
+  });
+
   // index.js
-  var f2_exports = {};
-  __export(f2_exports, {
+  var protobufjs_for_appscript_exports = {};
+  __export(protobufjs_for_appscript_exports, {
+    FlightDesignator: () => import_flight_designator.default,
     protobuf: () => import_protobufjs.default
   });
   var import_protobufjs = __toModule(require_protobufjs());
-  return f2_exports;
+  var import_flight_designator = __toModule(require_flight_designator());
+  return protobufjs_for_appscript_exports;
 })();

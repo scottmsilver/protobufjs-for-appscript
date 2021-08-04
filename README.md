@@ -1,12 +1,13 @@
 # protobufjs-for-appscript
 This is a small helper library that helps us generate a single JS file of protobufjs for use in AppScript.
-
+I also have added some other libraries I am using in projects. (I shouldn't do this)
 To do this yourself:
 
 - Install and build the library (you can give the global name anything you want.)
 ```console
 npm install --save-dev protobufjs
-npx esbuild index.js --bundle --global-name=psl --outfile=protobufjs.js
+npm i --save-dev flight-designator
+npx esbuild index.js --bundle --global-name=psl --outfile=libraries.js
 ```
 - Copy the contents of protobuf.js to your AppScript (it will be called protobuf.gs, presumably). I copied and pasted. :)
 
